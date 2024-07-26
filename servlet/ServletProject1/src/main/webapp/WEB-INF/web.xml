@@ -13,7 +13,7 @@
     <description></description>
     <display-name>MyServlet</display-name>
     <servlet-name>MyServlet</servlet-name>
-    <servlet-class>nyPackage.MyServlet</servlet-class>
+    <servlet-class>myPackage.MyServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>MyServlet</servlet-name>

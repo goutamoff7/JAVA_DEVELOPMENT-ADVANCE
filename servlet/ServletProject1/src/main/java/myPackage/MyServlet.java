@@ -1,4 +1,4 @@
-package nyPackage;
+package myPackage;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

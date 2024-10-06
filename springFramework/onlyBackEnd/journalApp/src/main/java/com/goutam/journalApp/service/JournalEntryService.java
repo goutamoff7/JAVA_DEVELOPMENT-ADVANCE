@@ -6,6 +6,7 @@ import com.goutam.journalApp.repository.JournalEntryRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,13 +20,20 @@ public class JournalEntryService {
     @Autowired
     private UserService userService;
 
-    public JournalEntry saveJournalEntryOfUser(JournalEntry journalEntry,String username) {
-        journalEntry.setDate(LocalDate.now());
-        User user = userService.getUserByUsername(username);
-        JournalEntry saved = journalEntryRepository.save(journalEntry);
-        user.getJournalEntries().add(saved);
-        userService.saveUser(user);
-        return saved;
+    @Transactional
+    public JournalEntry saveJournalEntryOfUser(JournalEntry journalEntry,String username) throws Exception {
+        try{
+            journalEntry.setDate(LocalDate.now());
+            User user = userService.getUserByUsername(username);
+            JournalEntry saved = journalEntryRepository.save(journalEntry);
+            user.getJournalEntries().add(saved);
+            userService.saveUser(user);
+            return saved;
+        }catch(Exception e)
+        {
+            throw new Exception("Something went wrong");
+        }
+
     }
 
     public List<JournalEntry> getAllJournalEntry() {
@@ -43,6 +51,22 @@ public class JournalEntryService {
             userService.saveUser(user);
             journalEntryRepository.deleteById(id);
         }catch(Exception e)
+        {
+            throw new Exception();
+        }
+    }
+
+    public void deleteJournalEntriesOfUser(User user) throws Exception
+    {
+        try
+        {
+            List<JournalEntry> journalEntries = user.getJournalEntries();
+            for(JournalEntry journalEntry:journalEntries)
+            {
+                journalEntryRepository.deleteById(journalEntry.getId());
+            }
+        }
+        catch(Exception e)
         {
             throw new Exception();
         }

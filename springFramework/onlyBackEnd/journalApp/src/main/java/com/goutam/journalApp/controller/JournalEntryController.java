@@ -39,11 +39,17 @@ public class JournalEntryController {
     @GetMapping("/{username}")
     public ResponseEntity<?> getAllJournalEntriesOfUser(@PathVariable String username) {
         User user = userService.getUserByUsername(username);
-        List<JournalEntry> allJournalEntryOfUser = user.getJournalEntries();
-        if (allJournalEntryOfUser != null && !allJournalEntryOfUser.isEmpty())
-            return new ResponseEntity<>(allJournalEntryOfUser, HttpStatus.OK);
+        if(user!=null)
+        {
+            List<JournalEntry> allJournalEntryOfUser = user.getJournalEntries();
+            if (allJournalEntryOfUser != null && !allJournalEntryOfUser.isEmpty())
+                return new ResponseEntity<>(allJournalEntryOfUser, HttpStatus.OK);
+            else
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
         else
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
     }
 
     //localhost:8080/journal/id/1

@@ -1,7 +1,9 @@
 package com.goutam.journalApp.service;
 
+import com.goutam.journalApp.model.JournalEntry;
 import com.goutam.journalApp.model.User;
 import com.goutam.journalApp.repository.UserRepository;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -24,12 +26,15 @@ public class UserService {
         return userRepository.findUserByUsername(username);
     }
 
-    public void deleteUser(String username) throws Exception {
-        User user = userRepository.findUserByUsername(username);
-        if(user!=null)
+    public void deleteUser(User user) throws Exception {
+        try{
             userRepository.deleteById(user.getId());
-        else
+        }
+        catch(Exception e)
+        {
             throw new Exception();
+        }
+
     }
 
     public User updateUser(String username,User updatedUser) throws Exception {

@@ -29,8 +29,7 @@ public class JournalEntryController {
 
     //localhost:8080/journal
     @PostMapping()
-    public ResponseEntity<JournalEntry> createJournalEntryOfUser(@RequestBody JournalEntry journalEntry)
-    {
+    public ResponseEntity<JournalEntry> createJournalEntryOfUser(@RequestBody JournalEntry journalEntry) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String username = authentication.getName();
@@ -40,7 +39,7 @@ public class JournalEntryController {
         }
     }
 
-    //localhost:8080/journal/goutam
+    //localhost:8080/journal
     @GetMapping()
     public ResponseEntity<?> getAllJournalEntriesOfUser() {
         try {
@@ -52,60 +51,61 @@ public class JournalEntryController {
             else
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
     //localhost:8080/journal/id/1
     @GetMapping("/id/{searchedId}")
-    public ResponseEntity<JournalEntry> getJournalEntryById(@PathVariable ObjectId searchedId) {
-        try{
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String username = authentication.getName();
-            User user = userService.getUserByUsername(username);
-            List<JournalEntry> collect = user
-                            .getJournalEntries()
-                            .stream()
-                            .filter(x -> x.getId().equals(searchedId))
-                            .toList();
-            if (!collect.isEmpty()) {
-                JournalEntry journalEntry = journalEntryService.getJournalEntryById(searchedId);
-                return new ResponseEntity<>(journalEntry, HttpStatus.OK);
-            }
-            else
-                throw new Exception();
-        }
-        catch(Exception e)
-        {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    //localhost:8080/journal/1
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteJournalEntryById(@PathVariable ObjectId id) {
+    public ResponseEntity<?> getJournalEntryById(@PathVariable ObjectId searchedId) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String username = authentication.getName();
-            journalEntryService.deleteJournalEntryById(id,username);
-            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+            List<JournalEntry> collect = journalEntryService.verifyJournalId(username, searchedId);
+            if (!collect.isEmpty()) {
+                JournalEntry journalEntry = journalEntryService.getJournalEntryById(searchedId);
+                return new ResponseEntity<>(journalEntry, HttpStatus.OK);
+            } else
+                return new ResponseEntity<>("Journal Entry not found",HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     //localhost:8080/journal/id/1
-    @PutMapping("/{username}/{id}")
-    public ResponseEntity<JournalEntry> updateJournalEntryById(@PathVariable ObjectId id,
-                                                               @RequestBody JournalEntry updatedEntry,
-                                                                @PathVariable String username) {
+    @PutMapping("/id/{givenId}")
+    public ResponseEntity<?> updateJournalEntryById(@PathVariable ObjectId givenId,
+                                                    @RequestBody JournalEntry updatedEntry) {
         try {
-            JournalEntry journalEntry = journalEntryService.updateJournalEntryById(id,username,updatedEntry);
-            return new ResponseEntity<>(journalEntry, HttpStatus.ACCEPTED);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String username = authentication.getName();
+            User user = userService.getUserByUsername(username);
+            List<JournalEntry> collect = journalEntryService.verifyJournalId(username, givenId);
+            if (!collect.isEmpty()) {
+                JournalEntry journalEntry = journalEntryService.updateJournalEntryById(givenId, updatedEntry);
+                return new ResponseEntity<>(journalEntry, HttpStatus.ACCEPTED);
+            } else
+                return new ResponseEntity<>("Journal Entry not found",HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+    //localhost:8080/journal/id/1
+    @DeleteMapping("/id/{givenId}")
+    public ResponseEntity<?> deleteJournalEntryById(@PathVariable ObjectId givenId) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String username = authentication.getName();
+            boolean removed = journalEntryService.deleteJournalEntryById(givenId, username);
+            if (removed)
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            else
+                return new ResponseEntity<>("Journal Entry not found",HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

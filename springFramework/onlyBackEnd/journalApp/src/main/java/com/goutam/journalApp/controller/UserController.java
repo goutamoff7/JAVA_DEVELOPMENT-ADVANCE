@@ -1,6 +1,4 @@
 package com.goutam.journalApp.controller;
-
-
 import com.goutam.journalApp.model.User;
 import com.goutam.journalApp.service.JournalEntryService;
 import com.goutam.journalApp.service.UserService;
@@ -46,6 +44,20 @@ public class UserController {
 //            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 //    }
 
+    //localhost:8080/user/
+    @PutMapping("/update")
+    public ResponseEntity<?> updateUser(@RequestBody User updatedUser) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String username = authentication.getName();
+            User user = userService.updateUser(username,updatedUser);
+            return new ResponseEntity<>(user, HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+
+    }
+
     //localhost:8080/user/delete
     @Transactional
     @DeleteMapping("/delete")
@@ -53,28 +65,15 @@ public class UserController {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String username = authentication.getName();
-                User user = userService.getUserByUsername(username);
-                journalEntryService.deleteJournalEntriesOfUser(user);
-                userService.deleteUser(user);
+                journalEntryService.deleteJournalEntriesOfUser(username);
+                userService.deleteUser(username);
                 return new ResponseEntity<>(HttpStatus.ACCEPTED);
             } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
-    //localhost:8080/user/
-    @PutMapping("/update")
-    public ResponseEntity<User> updateUser(@RequestBody User updatedUser) {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String username = authentication.getName();
-            User user = userService.updateUser(username,updatedUser);
-            return new ResponseEntity<>(user, HttpStatus.ACCEPTED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
 
-    }
 
 
 }

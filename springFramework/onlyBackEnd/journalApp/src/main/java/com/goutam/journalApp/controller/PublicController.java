@@ -20,7 +20,7 @@ public class PublicController {
     }
 
     @PostMapping("/create-user")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<?> createUser(@RequestBody User user) {
         try {
             if(user.getUsername()!=null && !user.getUsername().equals("") &&
             user.getPassword()!=null && !user.getPassword().equals(""))
@@ -28,7 +28,7 @@ public class PublicController {
             else
                 throw new Exception();
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

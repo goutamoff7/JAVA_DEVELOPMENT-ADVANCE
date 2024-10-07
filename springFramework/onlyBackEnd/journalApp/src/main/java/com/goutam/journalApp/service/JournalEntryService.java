@@ -43,23 +43,38 @@ public class JournalEntryService {
         return user.getJournalEntries();
     }
 
-    public void deleteJournalEntryById(ObjectId id, String username) throws Exception {
-        User user = userService.getUserByUsername(username);
-        user.getJournalEntries().removeIf(x -> x.getId().equals(id));
-        userService.saveUser(user);
-        journalEntryRepository.deleteById(id);
-    }
-
-    public void deleteJournalEntriesOfUser(User user) throws Exception
+    //verify whether the given id belongs to the requested user or not
+    public List<JournalEntry> verifyJournalId(String username,ObjectId id)
     {
-        List<JournalEntry> journalEntries = user.getJournalEntries();
-        for(JournalEntry journalEntry:journalEntries)
-        {
-            journalEntryRepository.deleteById(journalEntry.getId());
-        }
+        User user = userService.getUserByUsername(username);
+        return  user
+                .getJournalEntries()
+                .stream()
+                .filter(x -> x.getId().equals(id))
+                .toList();
     }
 
-    public JournalEntry updateJournalEntryById(ObjectId id, String username, JournalEntry updatedEntry) throws Exception {
+    @Transactional
+    public boolean deleteJournalEntryById(ObjectId id, String username) throws Exception {
+        boolean removed=false;
+        User user = userService.getUserByUsername(username);
+        removed =  user.getJournalEntries().removeIf(x -> x.getId().equals(id));
+        if(removed)
+        {
+            userService.saveUser(user);
+            journalEntryRepository.deleteById(id);
+        }
+        return removed;
+    }
+
+    public void deleteJournalEntriesOfUser(String username) throws Exception
+    {
+        User user = userService.getUserByUsername(username);
+        List<JournalEntry> journalEntries = user.getJournalEntries();
+          journalEntries.forEach(x->journalEntryRepository.deleteById(x.getId()));
+    }
+
+    public JournalEntry updateJournalEntryById(ObjectId id,JournalEntry updatedEntry) throws Exception {
         JournalEntry oldEntry = journalEntryRepository.findById(id).orElse(null);
         if(oldEntry!=null) {
             oldEntry.

@@ -24,9 +24,9 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User saveUser(User user)
+    public void saveUser(User user)
     {
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
 //    public List<User> getAllUser() {
@@ -37,15 +37,10 @@ public class UserService {
         return userRepository.findUserByUsername(username);
     }
 
-    public void deleteUser(User user) throws Exception {
-        try{
-            userRepository.deleteById(user.getId());
-        }
-        catch(Exception e)
-        {
-            throw new Exception();
-        }
-
+    public void deleteUser(String username) throws Exception {
+        User user = getUserByUsername(username);
+        userRepository.deleteById(user.getId());
+        throw new Exception();
     }
 
     public User updateUser(String username,User updatedUser) throws Exception {
@@ -55,7 +50,7 @@ public class UserService {
                     setPassword(updatedUser.getPassword() != null && !updatedUser.getPassword().equals("") ?
                             updatedUser.getPassword() : oldUser.getPassword());
 
-            return saveUser(oldUser);
+            return createNewUser(oldUser);
         }
         else
             throw new Exception();

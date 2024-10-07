@@ -5,7 +5,9 @@ import com.goutam.journalApp.model.User;
 import com.goutam.journalApp.repository.UserRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -14,13 +16,22 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User saveUser(User user) {
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+
+    public User createNewUser(User user) {
+        user.setPassword(encoder.encode(user.getPassword()));
+        user.setRoles(List.of("USER"));
         return userRepository.save(user);
     }
 
-    public List<User> getAllUser() {
-        return userRepository.findAll();
+    public User saveUser(User user)
+    {
+        return userRepository.save(user);
     }
+
+//    public List<User> getAllUser() {
+//        return userRepository.findAll();
+//    }
 
     public User getUserByUsername(String username) {
         return userRepository.findUserByUsername(username);
@@ -44,7 +55,7 @@ public class UserService {
                     setPassword(updatedUser.getPassword() != null && !updatedUser.getPassword().equals("") ?
                             updatedUser.getPassword() : oldUser.getPassword());
 
-            return userRepository.save(oldUser);
+            return saveUser(oldUser);
         }
         else
             throw new Exception();

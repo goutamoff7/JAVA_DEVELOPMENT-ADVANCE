@@ -22,53 +22,40 @@ public class JournalEntryService {
 
     @Transactional
     public JournalEntry saveJournalEntryOfUser(JournalEntry journalEntry,String username) throws Exception {
-        try{
-            journalEntry.setDate(LocalDate.now());
-            User user = userService.getUserByUsername(username);
-            JournalEntry saved = journalEntryRepository.save(journalEntry);
-            user.getJournalEntries().add(saved);
-            userService.saveUser(user);
-            return saved;
-        }catch(Exception e)
-        {
-            throw new Exception("Something went wrong");
-        }
-
+        journalEntry.setDate(LocalDate.now());
+        User user = userService.getUserByUsername(username);
+        JournalEntry saved = journalEntryRepository.save(journalEntry);
+        user.getJournalEntries().add(saved);
+        userService.saveUser(user);
+        return saved;
     }
 
-    public List<JournalEntry> getAllJournalEntry() {
+    public List<JournalEntry> getAllJournalEntry() throws Exception{
         return journalEntryRepository.findAll();
     }
 
-    public JournalEntry getJournalEntryById(ObjectId id) {
+    public JournalEntry getJournalEntryById(ObjectId id) throws Exception {
         return journalEntryRepository.findById(id).orElse(null);
     }
 
+    public List<JournalEntry> getJournalEntriesOfUser(String username) throws Exception{
+        User user = userService.getUserByUsername(username);
+        return user.getJournalEntries();
+    }
+
     public void deleteJournalEntryById(ObjectId id, String username) throws Exception {
-        try {
-            User user = userService.getUserByUsername(username);
-            user.getJournalEntries().removeIf(x -> x.getId().equals(id));
-            userService.saveUser(user);
-            journalEntryRepository.deleteById(id);
-        }catch(Exception e)
-        {
-            throw new Exception();
-        }
+        User user = userService.getUserByUsername(username);
+        user.getJournalEntries().removeIf(x -> x.getId().equals(id));
+        userService.saveUser(user);
+        journalEntryRepository.deleteById(id);
     }
 
     public void deleteJournalEntriesOfUser(User user) throws Exception
     {
-        try
+        List<JournalEntry> journalEntries = user.getJournalEntries();
+        for(JournalEntry journalEntry:journalEntries)
         {
-            List<JournalEntry> journalEntries = user.getJournalEntries();
-            for(JournalEntry journalEntry:journalEntries)
-            {
-                journalEntryRepository.deleteById(journalEntry.getId());
-            }
-        }
-        catch(Exception e)
-        {
-            throw new Exception();
+            journalEntryRepository.deleteById(journalEntry.getId());
         }
     }
 

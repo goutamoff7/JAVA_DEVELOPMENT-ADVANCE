@@ -24,23 +24,19 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public void saveUser(User user)
+    public void saveUser(User user) throws Exception
     {
         userRepository.save(user);
     }
 
-//    public List<User> getAllUser() {
-//        return userRepository.findAll();
-//    }
 
-    public User getUserByUsername(String username) {
+    public User getUserByUsername(String username) throws Exception{
         return userRepository.findUserByUsername(username);
     }
 
     public void deleteUser(String username) throws Exception {
         User user = getUserByUsername(username);
         userRepository.deleteById(user.getId());
-        throw new Exception();
     }
 
     public User updateUser(String username,User updatedUser) throws Exception {

@@ -44,7 +44,7 @@ public class JournalEntryService {
     }
 
     //verify whether the given id belongs to the requested user or not
-    public List<JournalEntry> verifyJournalId(String username,ObjectId id)
+    public List<JournalEntry> verifyJournalId(String username,ObjectId id) throws Exception
     {
         User user = userService.getUserByUsername(username);
         return  user

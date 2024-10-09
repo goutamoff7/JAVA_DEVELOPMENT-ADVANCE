@@ -22,8 +22,8 @@ public class PublicController {
     @PostMapping("/create-user")
     public ResponseEntity<?> createUser(@RequestBody User user) {
         try {
-            if(user.getUsername()!=null && !user.getUsername().equals("") &&
-            user.getPassword()!=null && !user.getPassword().equals(""))
+            if(user.getUsername()!=null && !user.getUsername().isEmpty() &&
+            user.getPassword()!=null && !user.getPassword().isEmpty())
                 return new ResponseEntity<>(userService.createNewUser(user), HttpStatus.CREATED);
             else
                 throw new Exception();

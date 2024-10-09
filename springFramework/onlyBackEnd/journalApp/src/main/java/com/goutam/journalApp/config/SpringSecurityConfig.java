@@ -21,13 +21,13 @@ public class SpringSecurityConfig {
     private UserDetailsServiceImpl userDetailsService;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http
                 .csrf(customizer -> customizer.disable())
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/public/**").permitAll()
-                        .requestMatchers("/journal/**", "/user/**").authenticated()
+                        .requestMatchers("/journal/**", "/user/**").hasAnyRole("USER","ADMIN")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session

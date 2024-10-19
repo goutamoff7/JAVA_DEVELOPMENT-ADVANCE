@@ -1,6 +1,7 @@
 package com.goutam.weatherApp.service;
 
 import com.goutam.weatherApp.model.WeatherResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -8,8 +9,10 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 public class WeatherService {
-    private static final String apiKey = "361f21f005338ba7bea388ea85bd83b7";
-    private static final String API = "http://api.openweathermap.org/data/2.5/weather?APPID=API_KEY&q=CITY";
+    @Value("${weather.api.key}")
+    private  String apiKey ;
+    @Value("${weather.api}")
+    private  String API ;
 
     RestTemplate restTemplate = new RestTemplate();
 

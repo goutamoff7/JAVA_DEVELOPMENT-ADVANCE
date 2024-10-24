@@ -1,6 +1,7 @@
 package com.goutam.journalApp.controller;
 
 import com.goutam.journalApp.model.User;
+import com.goutam.journalApp.service.EmailService;
 import com.goutam.journalApp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,9 @@ public class PublicController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    EmailService emailService;
+
     @GetMapping("/health-check")
     public String healthCheck() {
         return "ok";
@@ -23,10 +27,15 @@ public class PublicController {
     public ResponseEntity<?> createUser(@RequestBody User user) {
         try {
             if(user.getUsername()!=null && !user.getUsername().isEmpty() &&
+                    user.getEmail()!=null && !user.getEmail().isEmpty() &&
             user.getPassword()!=null && !user.getPassword().isEmpty())
-                return new ResponseEntity<>(userService.createNewUser(user), HttpStatus.CREATED);
+            {
+                User newUser = userService.createNewUser(user);
+                emailService.sendEmail(user.getEmail(),emailService.getEmailSubject(),emailService.getEmailBody());
+                return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+            }
             else
-                throw new Exception();
+                return new ResponseEntity<>("User Registration Failed!!",HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

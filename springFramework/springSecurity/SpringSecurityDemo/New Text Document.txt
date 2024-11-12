@@ -1,0 +1,54 @@
+public class SecurityConfiguration
+{
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception
+    {
+ 
+        // The below-mentioned steps called Builder pattern
+
+        return httpSecurity
+                .csrf(customizer -> customizer.disable())
+                .authorizeHttpRequests(request -> request.anyRequest().authenticated())
+                .httpBasic(Customizer.withDefaults())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .build();
+    }
+
+        1. Disabling CSRF Protection:
+.csrf(customizer -> customizer.disable())
+CSRF (Cross-Site Request Forgery) protection is typically enabled by default in Spring Security.
+It prevents malicious websites from making unauthorized requests on behalf of authenticated users.
+        In this code, CSRF protection is being disabled. This might be necessary in some cases,
+        especially in a stateless application (like one using JWT tokens for authentication)
+        where the server doesn't maintain session state.
+
+        2. Authorizing HTTP Requests:
+.authorizeHttpRequests(request -> request.anyRequest().authenticated())
+This line is about controlling access to the application.
+It says that any request made to the application must be authenticated.
+No one can access any endpoint without being logged in.
+
+        3. HTTP Basic Authentication:
+.httpBasic(Customizer.withDefaults())
+This configures HTTP Basic Authentication, which is a simple authentication scheme
+where the client sends a username and password with each request.
+The Customizer.withDefaults() means that it uses the default configuration for HTTP Basic.
+
+        4. Session Management:
+.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+This line configures how the server manages sessions.
+SessionCreationPolicy.STATELESS tells the server that it should not maintain any session state.
+Each request must be independently authenticated because the server will not keep track of any sessions. This is typical in RESTful web services where each request is treated as an independent transaction.
+
+        5. Building the Security Configuration:
+.build();
+Finally, .build() is used to finalize and apply the security configuration.
+Summary
+This configuration disables CSRF protection, requires authentication for all requests,
+uses HTTP Basic Authentication, and configures the application to be stateless,
+meaning that it doesn't store any session information on the server.
+This setup is common for RESTful APIs where each request needs to be authenticated without
+relying on session state.*/

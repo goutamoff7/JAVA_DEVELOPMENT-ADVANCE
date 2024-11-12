@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: Spring Security with JWT
+  security:
+    user:
+      name: user
+      password: 12345

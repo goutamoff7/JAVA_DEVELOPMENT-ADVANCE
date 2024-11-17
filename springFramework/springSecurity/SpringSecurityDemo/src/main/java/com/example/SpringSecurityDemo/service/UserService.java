@@ -1,12 +1,17 @@
 package com.example.SpringSecurityDemo.service;
 
+import com.example.SpringSecurityDemo.config.SecurityConfiguration;
+import com.example.SpringSecurityDemo.model.Role;
 import com.example.SpringSecurityDemo.model.Users;
 import com.example.SpringSecurityDemo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
 
 @Service
 public class UserService
@@ -18,19 +23,28 @@ public class UserService
     AuthenticationManager authenticationManager;
 
     @Autowired
-    UserRepository userRepository;
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
+    UserRepository usersRepository;
 
 
     public Users register(Users user)
     {
-        return userRepository.save(user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(Role.ROLE_USER);
+        return usersRepository.save(user);
     }
 
     public String verify(Users user)
     {
         Authentication authentication =
-                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                                user.getUsername(),user.getPassword()));
+                authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                user.getUsername(),
+                                user.getPassword()
+                        )
+                );
         if(authentication.isAuthenticated())
             return jwtService.generateToken(user.getUsername());
         else

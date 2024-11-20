@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Employee</title>
+</head>
+<body>
+<h1>Update Employee Form</h1>
+
+<form th:action="@{/update}" th:object="${employeeUpdate}" method="post">
+    <label class="label">Id</label>
+    <span th:text="'Update : ' + *{employeeUpdate.id}"></span><br/>
+<!--    <input type="hidden" th:field="*{id}"/>-->
+
+    <label class="label">First Name</label>
+    <input class="input" type="text" th:field="*{firstName}" name="firstName"/><br/>
+
+    <label class="label">Last Name</label>
+    <input class="input" type="text" th:field="*{lastName}" name="lastName"/><br/>
+
+    <input type="submit" value="Update">
+</form>
+
+</body>
+</html>

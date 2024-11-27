@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #4682b4;
+            text-align: center;
+        }
+.create-btn {
+    background-color: #4682b4; /* Blue */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Keep it inline like a button */
+    text-align: center; /* Center the text */
+}
+
+.create-btn:hover {
+    background-color: #0056b3; /* Darker Blue */
+}
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th {
+            background-color: #4682b4;
+            color: white;
+            padding: 10px;
+        }
+        td {
+            padding: 10px;
+            text-align: center;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+.update-btn {
+    background-color: #32cd32; /* Green */
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block; /* Ensure buttons are side by side */
+    margin-right: 10px; /* Add space between buttons */
+    text-decoration: none; /* Remove underline if used with <a> tag */
+    text-align: center; /* Center text inside button */
+}
+
+.update-btn:hover {
+    background-color: #2e8b57; /* Darker Green */
+}
+
+.delete-btn {
+    background-color: #ff4500; /* Red */
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block; /* Ensure buttons are side by side */
+    margin-right: 10px; /* Add space between buttons */
+    text-decoration: none; /* Remove underline if used with <a> tag */
+    text-align: center; /* Center text inside button */
+}
+
+.delete-btn:hover {
+    background-color: #dc143c; /* Darker Red */
+}
+
+    </style>
+</head>
+<body>
+    <h1>Student Details</h1>
+    <a class="btn create-btn" th:href="@{/students/new}">
+        Create New Student
+    </a>
+
+<!--    <button th:onclick="window.location.href='/students/new'">Create New Student</button>-->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Course</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Sample Data (Replace with dynamic content in actual application) -->
+            <tr th:each="student : ${students}">
+                <td th:text="${student.id}">1</td>
+                <td th:text="${student.name}">John Doe</td>
+                <td th:text="${student.email}">john@example.com</td>
+                <td th:text="${student.course}">Computer Science</td>
+                <td>
+                    <a class="btn update-btn"
+                       th:href="@{/students/edit/{id}(id=${student.id})}">
+                        Update
+                    </a>
+
+                    <a class="btn delete-btn"
+                       th:href="@{/students/delete/{id}(id=${student.id})}">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+
+        </tbody>
+
+    </table>
+</body>
+</html>

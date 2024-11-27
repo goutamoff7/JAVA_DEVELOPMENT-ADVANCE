@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Student</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #4682b4;
+            text-align: center;
+        }
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            color: #4682b4;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            color: #333;
+            background-color: #fff;
+        }
+        button {
+            background-color: #4682b4;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #4169e1;
+        }
+
+        .error-message {
+                color: red;
+                font-size: 0.9em;
+                margin-top: 0px;
+                margin-left: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Update Student</h1>
+    <form th:action="@{/students/edit/{id}}" th:object="${student}" action="#" method="POST">
+
+        <label for="name">Name:</label><br>
+        <input th:field="*{name}" type="text" id="name" name="name" value="John Doe"><br><br>
+        <div th:errors="*{name}" class="error-message"></div>
+
+        <label for="email">Email:</label><br>
+        <input th:field="*{email}" type="email" id="email" name="email" value="john@example.com"><br><br>
+        <div th:errors="*{email}" class="error-message"></div>
+
+        <label for="course">Course:</label><br>
+        <input th:field="*{course}" type="text" id="course" name="course" value="Computer Science"><br><br>
+        <div th:errors="*{course}" class="error-message"></div>
+
+        <input type="hidden" th:field="*{id}"/>
+        <button type="submit">Update</button>
+    </form>
+</body>
+</html>

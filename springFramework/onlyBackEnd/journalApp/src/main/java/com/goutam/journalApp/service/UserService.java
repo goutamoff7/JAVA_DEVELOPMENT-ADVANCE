@@ -5,9 +5,15 @@ import com.goutam.journalApp.model.User;
 import com.goutam.journalApp.repository.UserRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -16,10 +22,17 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    @Autowired
+    JwtService jwtService;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     public User createNewUser(User user) {
-        user.setPassword(encoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(List.of("USER"));
         return userRepository.save(user);
     }
@@ -50,5 +63,16 @@ public class UserService {
         }
         else
             throw new Exception();
+    }
+
+    public String verify(User user)
+    {
+        Authentication authentication =
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                        user.getUsername(),user.getPassword()));
+        if(authentication.isAuthenticated())
+            return jwtService.generateToken(user.getUsername());
+        else
+            return "Login Failed";
     }
 }

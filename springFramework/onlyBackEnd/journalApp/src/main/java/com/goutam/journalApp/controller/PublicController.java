@@ -30,12 +30,11 @@ public class PublicController {
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody User user) {
         try {
-            if(user.getUsername()!=null && !user.getUsername().isEmpty() &&
-                    user.getEmail()!=null && !user.getEmail().isEmpty() &&
+            if(user.getEmail()!=null && !user.getEmail().isEmpty() &&
             user.getPassword()!=null && !user.getPassword().isEmpty())
             {
                 User newUser = userService.createNewUser(user);
-                emailService.sendEmail(user.getEmail(),emailService.getEmailSubject(),emailService.getEmailBody());
+                emailService.sendEmail(user.getEmail());
                 return new ResponseEntity<>(newUser, HttpStatus.CREATED);
             }
             else

@@ -13,13 +13,13 @@ public class EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
-    public void sendEmail(String to, String subject, String body)
+    public void sendEmail(String to)
     {
         try{
             SimpleMailMessage mail = new SimpleMailMessage();
             mail.setTo(to);
-            mail.setSubject(subject);
-            mail.setText(body);
+            mail.setSubject(getEmailSubject());
+            mail.setText(getEmailBody());
             javaMailSender.send(mail);
         }catch(Exception e)
         {

@@ -32,6 +32,7 @@ public class UserService {
     PasswordEncoder passwordEncoder;
 
     public User createNewUser(User user) {
+        user.setUsername(user.getEmail().split("@")[0]);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(List.of("USER"));
         return userRepository.save(user);

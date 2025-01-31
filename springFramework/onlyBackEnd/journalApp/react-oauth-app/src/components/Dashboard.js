@@ -23,6 +23,7 @@ const Dashboard = () => {
                 <div className="oauth2">
                     <p><strong>Name:</strong> {user.name}</p>
                     <p><strong>Email:</strong> {user.email}</p>
+                    <p><strong>JWT_token:</strong> {user.jwt_token}</p>
                     {user.picture && (
                         <img
                             src={user.picture}

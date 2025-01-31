@@ -24,6 +24,7 @@ public class User {
     private String username;
     @NonNull
     private String password;
+    @Indexed(unique = true)
     private String email;
     private boolean sentimentAnalysis;
     @DBRef

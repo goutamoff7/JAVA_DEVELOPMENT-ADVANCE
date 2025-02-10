@@ -1,6 +1,7 @@
 package com.goutam.journalApp.service;
 
 import com.goutam.journalApp.model.JournalEntry;
+import com.goutam.journalApp.model.Roles;
 import com.goutam.journalApp.model.User;
 import com.goutam.journalApp.repository.UserRepository;
 import org.bson.types.ObjectId;
@@ -32,19 +33,18 @@ public class UserService {
     PasswordEncoder passwordEncoder;
 
     public User createNewUser(User user) {
-        user.setUsername(user.getEmail().split("@")[0]);
+        user.setUsername(extractUsername(user));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(List.of("USER"));
+        user.setRoles(Roles.ROLE_USER);
         return userRepository.save(user);
     }
 
-    public void saveUser(User user) throws Exception
-    {
+    public void saveUser(User user) throws Exception {
         userRepository.save(user);
     }
 
 
-    public User getUserByUsername(String username) throws Exception{
+    public User getUserByUsername(String username) throws Exception {
         return userRepository.findUserByUsername(username);
     }
 
@@ -53,27 +53,26 @@ public class UserService {
         userRepository.deleteById(user.getId());
     }
 
-    public User updateUser(String username,User updatedUser) throws Exception {
-        User oldUser = getUserByUsername(username);
-        if(oldUser!=null) {
-            oldUser.
-                    setPassword(updatedUser.getPassword() != null && !updatedUser.getPassword().equals("") ?
-                            updatedUser.getPassword() : oldUser.getPassword());
-
-            return createNewUser(oldUser);
-        }
-        else
+    public void updateUserPassword(String username, String password) throws Exception {
+        User user = getUserByUsername(username);
+        if (user != null) {
+            user.setPassword(passwordEncoder.encode(password));
+            saveUser(user);
+        } else
             throw new Exception();
     }
 
-    public String verify(User user)
-    {
+    public String verify(User user) {
+        String username = extractUsername(user);
         Authentication authentication =
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                        user.getUsername(),user.getPassword()));
-        if(authentication.isAuthenticated())
-            return jwtService.generateToken(user.getUsername());
-        else
-            return "Login Failed";
+                        username, user.getPassword()));
+        if (authentication.isAuthenticated())
+            return jwtService.generateToken(username);
+        return "Login Failed";
+    }
+
+    public String extractUsername(User user) {
+        return user.getEmail().split("@")[0];
     }
 }

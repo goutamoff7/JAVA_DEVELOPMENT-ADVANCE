@@ -1,5 +1,6 @@
 package com.goutam.journalApp.service;
 
+import com.goutam.journalApp.model.PrincipleUser;
 import com.goutam.journalApp.model.User;
 import com.goutam.journalApp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +18,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findUserByUsername(username);
-        if(user!=null) {
-            return org.springframework.security.core.userdetails.User.builder()
-                    .username(user.getUsername())
-                    .password(user.getPassword())
-                    .roles(user.getRoles().toArray(new String[0]))
-                    .build();
+        if(user==null) {
+            throw new UsernameNotFoundException("User not Found");
         }
-        throw new UsernameNotFoundException("User Not Found");
+        return new PrincipleUser(user);
     }
 }

@@ -1,6 +1,7 @@
 package com.goutam.journalApp.service;
 
 import com.goutam.journalApp.model.JournalEntry;
+import com.goutam.journalApp.model.Roles;
 import com.goutam.journalApp.model.User;
 import com.goutam.journalApp.repository.JournalEntryRepository;
 import com.goutam.journalApp.repository.UserRepository;
@@ -14,6 +15,9 @@ import java.util.List;
 public class AdminService {
 
     @Autowired
+    UserService userService;
+
+    @Autowired
     UserRepository userRepository;
 
     @Autowired
@@ -22,8 +26,9 @@ public class AdminService {
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     public User createNewAdmin(User user) {
+        user.setUsername(userService.extractUsername(user));
         user.setPassword(encoder.encode(user.getPassword()));
-        user.setRoles(List.of("USER","ADMIN"));
+        user.setRoles(Roles.ROLE_ADMIN);
         return userRepository.save(user);
     }
 

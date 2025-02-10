@@ -20,7 +20,7 @@ const Dashboard = () => {
         <div className="dashboard-container">
             <h2 className="dashboard-title">Dashboard</h2>
             {user ? (
-                <div className="oauth2">
+                <div className="user-info">
                     <p><strong>Name:</strong> {user.name}</p>
                     <p><strong>Email:</strong> {user.email}</p>
                     <p><strong>JWT_token:</strong> {user.jwt_token}</p>

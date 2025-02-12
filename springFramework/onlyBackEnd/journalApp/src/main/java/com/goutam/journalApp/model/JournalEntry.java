@@ -3,6 +3,7 @@ package com.goutam.journalApp.model;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Generated;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 @Document(collection = "journal")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class JournalEntry {
     @Id
     private ObjectId id;

@@ -2,7 +2,7 @@ package com.goutam.journalApp.controller;
 
 import com.goutam.journalApp.model.User;
 import com.goutam.journalApp.model.JournalEntry;
-import com.goutam.journalApp.model.UserDTO;
+import com.goutam.journalApp.DTO.UserDTO;
 import com.goutam.journalApp.service.AdminService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,6 +37,7 @@ public class AdminController {
     }
 
     //localhost:8080/admin/create-admin
+    @Operation(summary = "Signup as an Admin")
     @PostMapping("/create-admin")
     public ResponseEntity<?> createAdmin(@RequestBody UserDTO userDTO) {
         try {

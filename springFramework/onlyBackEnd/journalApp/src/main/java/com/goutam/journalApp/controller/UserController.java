@@ -1,8 +1,9 @@
 package com.goutam.journalApp.controller;
 import com.goutam.journalApp.model.User;
-import com.goutam.journalApp.model.UserDTO;
+import com.goutam.journalApp.DTO.UserDTO;
 import com.goutam.journalApp.service.JournalEntryService;
 import com.goutam.journalApp.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -24,7 +24,8 @@ public class UserController {
     @Autowired
     private JournalEntryService journalEntryService;
 
-    //localhost:8080/user/all-users
+    //localhost:8080/user/get
+    @Operation(summary="Get User Information")
     @GetMapping("/get")
     public ResponseEntity<?> getUser() {
         try{
@@ -41,6 +42,7 @@ public class UserController {
     }
 
     //localhost:8080/user/update
+    @Operation(summary="Update User Information")
     @PutMapping("/update")
     public ResponseEntity<?> updateUserPassword(@RequestBody UserDTO userDTO) {
         try {
@@ -56,6 +58,7 @@ public class UserController {
     }
 
     //localhost:8080/user/delete
+    @Operation(summary="Delete User")
     @Transactional
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteUser() {

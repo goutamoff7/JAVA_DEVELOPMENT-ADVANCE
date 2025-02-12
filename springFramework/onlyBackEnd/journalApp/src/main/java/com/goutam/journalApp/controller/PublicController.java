@@ -1,7 +1,7 @@
 package com.goutam.journalApp.controller;
 
 import com.goutam.journalApp.model.User;
-import com.goutam.journalApp.model.UserDTO;
+import com.goutam.journalApp.DTO.UserDTO;
 import com.goutam.journalApp.service.EmailService;;
 import com.goutam.journalApp.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;

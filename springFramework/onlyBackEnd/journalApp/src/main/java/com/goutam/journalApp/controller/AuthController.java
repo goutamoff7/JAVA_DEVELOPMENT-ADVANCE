@@ -4,6 +4,7 @@ import com.goutam.journalApp.service.EmailService;
 import com.goutam.journalApp.service.JwtService;
 import com.goutam.journalApp.service.UserDetailsServiceImpl;
 import com.goutam.journalApp.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,7 +37,9 @@ public class AuthController {
 
     @GetMapping("/oauth2")
     public ResponseEntity<?> oauthLogin(@AuthenticationPrincipal OAuth2User user) {
+
         if (user == null) {
+            System.out.println(user);
             return new ResponseEntity<>("User is not authenticated",HttpStatus.UNAUTHORIZED);
         }
 

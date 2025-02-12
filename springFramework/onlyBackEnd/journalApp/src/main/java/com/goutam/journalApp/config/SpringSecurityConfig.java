@@ -1,10 +1,12 @@
 package com.goutam.journalApp.config;
+
 import com.goutam.journalApp.service.JwtService;
 import com.goutam.journalApp.service.UserDetailsServiceImpl;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -35,27 +37,36 @@ public class SpringSecurityConfig {
     private JwtService jwtService;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(@NotNull HttpSecurity http)
-            throws Exception {
+    public SecurityFilterChain authFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .httpBasic(Customizer.withDefaults())
+                .securityMatcher("/oauth2/**","/login/oauth2/code/**")
+                .authorizeHttpRequests(request->request.anyRequest().authenticated())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+                .oauth2Login(oauth2->
+                        oauth2.defaultSuccessUrl(
+                                "http://localhost:3000/dashboard"
+                                ,true)
+                )
+                .build();
+    }
+
+    @Bean
+    public SecurityFilterChain jwtFilterChain(HttpSecurity http) throws Exception {
+        return http
+                .securityMatcher("/**")
+                .csrf(csrf->csrf.disable())
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(
                                 "/public/**",
-                                "/oauth2/**",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**").permitAll()
                         .requestMatchers("/journal/**", "/user/**")
                         .hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .anyRequest().authenticated())
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)   )
-                .oauth2Login(oauth2 ->
-                        oauth2.defaultSuccessUrl(
-                                "http://localhost:3000/dashboard",true)
+                        .anyRequest().authenticated()
                 )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

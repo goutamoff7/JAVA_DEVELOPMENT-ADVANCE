@@ -6,6 +6,9 @@ import com.goutam.journalApp.model.User;
 import com.goutam.journalApp.repository.UserRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,6 +35,7 @@ public class UserService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+//    @CachePut(value="user",key="#result.id.toString()")
     public User createNewUser(User user) {
         user.setUsername(extractUsername(user));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -39,20 +43,23 @@ public class UserService {
         return userRepository.save(user);
     }
 
+//    @CachePut(value="user",key="#result.id.toString()")
     public void saveUser(User user) throws Exception {
         userRepository.save(user);
     }
 
-
+//    @Cacheable(value="user",key="#username")
     public User getUserByUsername(String username) throws Exception {
         return userRepository.findUserByUsername(username);
     }
 
+//    @CacheEvict(value="user",key="#username")
     public void deleteUser(String username) throws Exception {
         User user = getUserByUsername(username);
         userRepository.deleteById(user.getId());
     }
 
+//    @CacheEvict(value="user",key="#username")
     public void updateUserPassword(String username, String password) throws Exception {
         User user = getUserByUsername(username);
         if (user != null) {

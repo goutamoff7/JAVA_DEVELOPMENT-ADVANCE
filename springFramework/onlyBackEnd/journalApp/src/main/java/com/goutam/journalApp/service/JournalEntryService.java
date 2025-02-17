@@ -5,6 +5,9 @@ import com.goutam.journalApp.model.User;
 import com.goutam.journalApp.repository.JournalEntryRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +24,7 @@ public class JournalEntryService {
     private UserService userService;
 
     @Transactional
+//    @CachePut(value="journalEntry",key="#result.id.toString()")
     public JournalEntry saveJournalEntryOfUser(JournalEntry journalEntry,String username) throws Exception {
         journalEntry.setDate(LocalDate.now());
         User user = userService.getUserByUsername(username);
@@ -30,14 +34,12 @@ public class JournalEntryService {
         return saved;
     }
 
-    public List<JournalEntry> getAllJournalEntry() throws Exception{
-        return journalEntryRepository.findAll();
-    }
-
+//    @Cacheable(value="journalEntry",key="#id.toString()")
     public JournalEntry getJournalEntryById(ObjectId id) throws Exception {
         return journalEntryRepository.findById(id).orElse(null);
     }
 
+//    @Cacheable(value = "journalEntries", key = "#username")
     public List<JournalEntry> getJournalEntriesOfUser(String username) throws Exception{
         User user = userService.getUserByUsername(username);
         return user.getJournalEntries();
@@ -55,6 +57,7 @@ public class JournalEntryService {
     }
 
     @Transactional
+//    @CacheEvict(value="journalEntry",key="#id.toString()")
     public boolean deleteJournalEntryById(ObjectId id, String username) throws Exception {
         boolean removed=false;
         User user = userService.getUserByUsername(username);
@@ -67,13 +70,23 @@ public class JournalEntryService {
         return removed;
     }
 
+//    @CacheEvict(value="journalEntry",key="#id.toString()")
     public void deleteJournalEntriesOfUser(String username) throws Exception
     {
         User user = userService.getUserByUsername(username);
         List<JournalEntry> journalEntries = user.getJournalEntries();
-          journalEntries.forEach(x->journalEntryRepository.deleteById(x.getId()));
+          journalEntries.forEach(x-> {
+              journalEntryRepository.deleteById(x.getId());
+              evictJournalEntryFromCache(x.getId());
+          });
     }
 
+    // This method is used to evict specific journal entries from cache
+//    @CacheEvict(value = "journalEntry", key = "#id.toString()")
+    public void evictJournalEntryFromCache(ObjectId id) {
+    }
+
+//    @CachePut(value = "journalEntry", key = "#id.toString()")
     public JournalEntry updateJournalEntryById(ObjectId id,JournalEntry updatedEntry) throws Exception {
         JournalEntry oldEntry = journalEntryRepository.findById(id).orElse(null);
         if(oldEntry!=null) {

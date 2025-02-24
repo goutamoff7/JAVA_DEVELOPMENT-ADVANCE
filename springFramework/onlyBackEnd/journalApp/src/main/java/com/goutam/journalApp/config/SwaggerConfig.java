@@ -32,7 +32,7 @@ public class SwaggerConfig {
                 .tags(Arrays.asList(
                                 new Tag().name("Admin APIs"),
                                 new Tag().name("Journal Entry APIs"),
-                                new Tag().name("User APIs"),
+                                new Tag().name("U   ser APIs"),
                                 new Tag().name("Oauth2.0 Login API"),
                                 new Tag().name("Public APIs")
                         )

@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 import java.sql.SQLOutput;
 
 @Service
-@Async
 public class EmailService {
 
     @Autowired
     private JavaMailSender javaMailSender;
 
+    @Async
     public void sendEmail(String to)
     {
         try{

@@ -2,15 +2,12 @@ package com.goutam.journalApp.config;
 
 import com.goutam.journalApp.service.JwtService;
 import com.goutam.journalApp.service.UserDetailsServiceImpl;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -39,13 +36,13 @@ public class SpringSecurityConfig {
     @Bean
     public SecurityFilterChain authFilterChain(HttpSecurity http) throws Exception {
         return http
-                .securityMatcher("/oauth2/**","/login/oauth2/code/**")
-                .authorizeHttpRequests(request->request.anyRequest().authenticated())
+                .securityMatcher("/oauth2/**", "/login/oauth2/code/**")
+                .authorizeHttpRequests(request -> request.anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
-                .oauth2Login(oauth2->
+                .oauth2Login(oauth2 ->
                         oauth2.defaultSuccessUrl(
                                 "http://localhost:3000/dashboard"
-                                ,true)
+                                , true)
                 )
                 .build();
     }
@@ -54,7 +51,7 @@ public class SpringSecurityConfig {
     public SecurityFilterChain jwtFilterChain(HttpSecurity http) throws Exception {
         return http
                 .securityMatcher("/**")
-                .csrf(csrf->csrf.disable())
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(
                                 "/public/**",
@@ -94,7 +91,7 @@ public class SpringSecurityConfig {
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
+        provider.setPasswordEncoder(passwordEncoder());
         provider.setUserDetailsService(userDetailsService);
         return provider;
     }

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 
 @Component
@@ -16,6 +15,7 @@ public class WeatherResponse {
     private String name;
 
     @Component
+    @Data
     public static class Main {
         @JsonProperty("temp")
         private double temp;
@@ -33,6 +33,7 @@ public class WeatherResponse {
     }
 
     @Component
+    @Data
     public static class Weather {
         @JsonProperty("description")
         private String description;

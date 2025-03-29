@@ -1,5 +1,6 @@
 package com.goutam.journalApp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Generated;
 import jakarta.validation.constraints.NotEmpty;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
@@ -21,9 +23,16 @@ import java.time.LocalDate;
 public class JournalEntry implements Serializable {
     @Id
     private ObjectId id;
+
     @NotEmpty
     private String title;
+
     @NotEmpty
     private String content;
+
     private LocalDate date;
+
+    @JsonIgnore
+    @DBRef(lazy = true)
+    private User user;
 }

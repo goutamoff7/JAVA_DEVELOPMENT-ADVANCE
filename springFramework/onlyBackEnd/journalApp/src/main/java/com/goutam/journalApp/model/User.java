@@ -36,7 +36,8 @@ public class User implements Serializable {
 
     private Roles roles;
 
-    @DBRef
+    @JsonIgnore
+    @DBRef(lazy = true)
     private List<JournalEntry> journalEntries = new ArrayList<>();
 
 }

@@ -35,7 +35,6 @@ public class UserService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-//    @CachePut(value="user",key="#result.id.toString()")
     public User createNewUser(User user) {
         user.setUsername(extractUsername(user));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -43,23 +42,19 @@ public class UserService {
         return userRepository.save(user);
     }
 
-//    @CachePut(value="user",key="#result.id.toString()")
     public void saveUser(User user) throws Exception {
         userRepository.save(user);
     }
 
-//    @Cacheable(value="user",key="#username")
     public User getUserByUsername(String username) throws Exception {
         return userRepository.findUserByUsername(username);
     }
 
-//    @CacheEvict(value="user",key="#username")
     public void deleteUser(String username) throws Exception {
         User user = getUserByUsername(username);
         userRepository.deleteById(user.getId());
     }
 
-//    @CacheEvict(value="user",key="#username")
     public void updateUserPassword(String username, String password) throws Exception {
         User user = getUserByUsername(username);
         if (user != null) {

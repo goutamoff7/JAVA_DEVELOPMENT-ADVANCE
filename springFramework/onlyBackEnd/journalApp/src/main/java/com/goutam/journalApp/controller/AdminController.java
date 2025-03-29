@@ -1,5 +1,6 @@
 package com.goutam.journalApp.controller;
 
+import com.goutam.journalApp.Pagination.PagingResponse;
 import com.goutam.journalApp.model.User;
 import com.goutam.journalApp.model.JournalEntry;
 import com.goutam.journalApp.DTO.UserDTO;
@@ -21,13 +22,23 @@ public class AdminController {
     @Autowired
     AdminService adminService;
 
-    //localhost:8080/admin/all-users
+//    localhost:8080/admin/all-users?
+//    pageNumber=0&
+//    pageSize=12&
+//    sortBy=id&
+//    sortingOrder=ASC
     @Operation(summary = "Get all User details")
     @GetMapping("/all-users")
-    public ResponseEntity<?> getAllUser() {
+    public ResponseEntity<?> getAllUser(
+            @RequestParam(required = false,defaultValue = "0") int pageNumber,
+            @RequestParam(required = false,defaultValue = "12") int pageSize,
+            @RequestParam(required = false,defaultValue = "id") String sortBy,
+            @RequestParam(required = false,defaultValue = "ASC") String sortingOrder
+    ) {
         try {
-            List<User> allUser = adminService.getAllUser();
-            if (allUser != null && !allUser.isEmpty())
+            PagingResponse<User> allUser = adminService.getAll(
+                    User.class,pageNumber,pageSize,sortBy,sortingOrder);
+            if (allUser != null)
                 return new ResponseEntity<>(allUser, HttpStatus.OK);
             else
                 return new ResponseEntity<>("No User exits", HttpStatus.NO_CONTENT);
@@ -52,14 +63,23 @@ public class AdminController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-
-    //localhost:8080/admin/all-journals
+//    localhost:8080/admin/all-journals?
+//    pageNumber=0&
+//    pageSize=12&
+//    sortBy=id&
+//    sortingOrder=ASC
     @Operation(summary = "Get all Journal entries")
     @GetMapping("all-journals")
-    public ResponseEntity<?> getAllJournals() {
+    public ResponseEntity<?> getAllJournals(
+            @RequestParam(required = false,defaultValue = "0") int pageNumber,
+            @RequestParam(required = false,defaultValue = "12") int pageSize,
+            @RequestParam(required = false,defaultValue = "id") String sortBy,
+            @RequestParam(required = false,defaultValue = "ASC") String sortingOrder
+    ){
         try {
-            List<JournalEntry> allJournals = adminService.getAllJournals();
-            if (allJournals != null && !allJournals.isEmpty())
+            PagingResponse<JournalEntry> allJournals = adminService.getAll(
+                    JournalEntry.class,pageNumber,pageSize,sortBy,sortingOrder);
+            if (allJournals != null)
                 return new ResponseEntity<>(allJournals, HttpStatus.OK);
             else
                 return new ResponseEntity<>("No Journal exits", HttpStatus.NO_CONTENT);

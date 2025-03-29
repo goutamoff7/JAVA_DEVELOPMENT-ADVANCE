@@ -1,6 +1,7 @@
 package com.goutam.journalApp.controller;
 
 import com.goutam.journalApp.DTO.JournalDTO;
+import com.goutam.journalApp.Pagination.PagingResponse;
 import com.goutam.journalApp.model.JournalEntry;
 import com.goutam.journalApp.model.User;
 import com.goutam.journalApp.service.JournalEntryService;
@@ -45,15 +46,25 @@ public class JournalEntryController {
         }
     }
 
-    //localhost:8080/journal
+//    localhost:8080/journal/get-all?
+//    pageNumber=0&
+//    pageSize=12&
+//    sortBy=id&
+//    sortingOrder=ASC
     @Operation(summary = "Get all Journal Entries Of a User")
     @GetMapping("/get-all")
-    public ResponseEntity<?> getAllJournalEntriesOfUser() {
+    public ResponseEntity<?> getAllJournalEntriesOfUser(
+            @RequestParam(required = false,defaultValue = "0") int pageNumber,
+            @RequestParam(required = false,defaultValue = "12") int pageSize,
+            @RequestParam(required = false,defaultValue = "id") String sortBy,
+            @RequestParam(required = false,defaultValue = "ASC") String sortingOrder) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String username = authentication.getName();
-            List<JournalEntry> allJournalEntryOfUser = journalEntryService.getJournalEntriesOfUser(username);
-            if (allJournalEntryOfUser != null && !allJournalEntryOfUser.isEmpty())
+            PagingResponse<JournalEntry> allJournalEntryOfUser =
+                    journalEntryService.getJournalEntriesOfUser(
+                            username,pageNumber,pageSize,sortBy,sortingOrder);
+            if (allJournalEntryOfUser != null)
                 return new ResponseEntity<>(allJournalEntryOfUser, HttpStatus.OK);
             else
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);

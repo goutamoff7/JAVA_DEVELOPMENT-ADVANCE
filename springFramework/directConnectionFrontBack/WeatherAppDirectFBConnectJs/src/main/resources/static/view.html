@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather View</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0f7fa;
+            color: #006064;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #00796b;
+            margin-bottom: 20px;
+        }
+        .weather-info {
+            display: inline-block;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            width: 80%;
+            max-width: 500px;
+        }
+        .weather-info div {
+            margin-bottom: 15px;
+        }
+        .label {
+            font-weight: bold;
+            color: #00796b;
+        }
+        .value {
+            color: #006064;
+        }
+    </style>
+</head>
+<body>
+<h1 id="cityName">Weather Details</h1>
+<div class="weather-info">
+    <div><span class="label">Temperature:</span> <span class="value" id="temperature"></span></div>
+    <div><span class="label">Feels Like:</span> <span class="value" id="feelsLike"></span></div>
+    <div><span class="label">Humidity:</span> <span class="value" id="humidity"></span></div>
+    <div><span class="label">Wind Speed:</span> <span class="value" id="windSpeed"></span></div>
+    <div><span class="label">Description:</span> <span class="value" id="description"></span></div>
+</div>
+
+<script>
+    // Get weather data from localStorage
+    const weatherData = JSON.parse(localStorage.getItem('weatherData'));
+
+    if (weatherData) {
+        document.getElementById('cityName').textContent = `Weather Details for ${weatherData.cityName}`;
+        document.getElementById('temperature').textContent = `${weatherData.temperature}°C`;
+        document.getElementById('feelsLike').textContent = `${weatherData.feelsLike}°C`;
+        document.getElementById('humidity').textContent = `${weatherData.humidity}%`;
+        document.getElementById('windSpeed').textContent = `${weatherData.windSpeed} km/h`;
+        document.getElementById('description').textContent = `${weatherData.description}`;
+    } else {
+        document.body.innerHTML = '<p>Error: No weather data available. Please go back and search again.</p>';
+    }
+</script>
+</body>
+</html>

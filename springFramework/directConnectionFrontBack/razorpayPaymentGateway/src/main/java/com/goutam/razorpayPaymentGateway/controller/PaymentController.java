@@ -3,7 +3,6 @@ package com.goutam.razorpayPaymentGateway.controller;
 import com.goutam.razorpayPaymentGateway.model.Payments;
 import com.goutam.razorpayPaymentGateway.service.PaymentService;
 import com.razorpay.RazorpayException;
-import com.razorpay.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;

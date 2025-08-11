@@ -1,0 +1,5 @@
+INDEX VERSION 1.134+G:\GOUTAM LAPTOP\PW SKILLS\DSA WITH JAVA\JAVA WORKSPACE FOR PRACTICE\advanceJava\jdbc\.metadata\.plugins\org.eclipse.jdt.core
+1760759408.index
+3486302058.index
+85438016.index
+1865797976.index

@@ -9,70 +9,70 @@ public class JDBC_CRUD {
     static ResultSet resultSet = null;
 
     public static void main(String[] args) {
-            
-            try {
-            	connection = JDBCUtil.getJdbcConnection();
-                   while(true)
-                   {
-                       System.out.println(
-                    		   "Press 1 to Create Table "+
-                    		   "\t Press 2 to Insert " +
-                               "\t Press 3 to Read " +
-                               "\n Press 4 to Update " +
-                               "\t\t Press 5 to Delete"+
-                               "\t Press 6 to Drop or Truncate Table"+
-                               "\n Press 7 to Exit");
 
-                       System.out.print("Enter Your Choice : ");
-                       int choice = scan.nextInt();
+        try {
+            connection = JDBCUtil.getJdbcConnection();
+            while(true)
+            {
+                System.out.println(
+                        "Press 1 to Create Table "+
+                                "\t Press 2 to Insert " +
+                                "\t Press 3 to Read " +
+                                "\n Press 4 to Update " +
+                                "\t\t Press 5 to Delete"+
+                                "\t Press 6 to Drop or Truncate Table"+
+                                "\n Press 7 to Exit");
 
-                       switch (choice)
-                       {
-                       		case 1: create();
-                       			break;
-                           case 2:  insert();
-                                break;
-                           case 3:  read();
-                                break;
-                           case 4:  update();
-                                break;
-                           case 5:  delete();
-                                break;
-                           case 6:  drop();
-                          	    break;
-                           case 7:  JDBCUtil.closeResourse(connection, preparedStatement, statement, resultSet, scan);
-                       	   		break;
-                           default: System.out.println("Enter Correct Choice");
-                       }
+                System.out.print("Enter Your Choice : ");
+                int choice = scan.nextInt();
 
-                   }
+                switch (choice)
+                {
+                    case 1: create();
+                        break;
+                    case 2:  insert();
+                        break;
+                    case 3:  read();
+                        break;
+                    case 4:  update();
+                        break;
+                    case 5:  delete();
+                        break;
+                    case 6:  drop();
+                        break;
+                    case 7:  JDBCUtil.closeResourse(connection, preparedStatement, statement, resultSet);
+                        return;
+                    default: System.out.println("Enter Correct Choice");
+                }
 
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
             }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
         finally
         {
-        	JDBCUtil.closeResourse(connection,preparedStatement,statement,resultSet,scan);
+            JDBCUtil.closeResourse(connection,preparedStatement,statement,resultSet);
         }
     }
     // Creating Table inside the database
     public static void create() throws SQLException
     {
-    	String sql = "create table student(s_roll int primary key auto_increment,s_name varchar(20),city varchar(20),college varchar(30) default'SETGOI');";
-    	try {
-			 statement = connection.createStatement();
-			if(statement !=null)
-			{
-				int rowsEffected = statement.executeUpdate(sql);
-				if(rowsEffected == 0)
-					System.out.println("Table Created Successfully");
-				else
-					throw new SQLException();
-			}
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-			System.out.println("Table Creation Failed");
-		}
+        String sql = "create table student(s_roll int primary key auto_increment,s_name varchar(20),city varchar(20),college varchar(30) default'SETGOI');";
+        try {
+            statement = connection.createStatement();
+            if(statement !=null)
+            {
+                int rowsEffected = statement.executeUpdate(sql);
+                if(rowsEffected == 0)
+                    System.out.println("Table Created Successfully");
+                else
+                    throw new SQLException();
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            System.out.println("Table Creation Failed");
+        }
     }
     // Inserting Data into the Table
     public static void insert()
@@ -95,7 +95,7 @@ public class JDBC_CRUD {
                 if(rowsEffected>0)
                     System.out.println("Record Insertion Successful");
                 else
-                	throw new SQLException();
+                    throw new SQLException();
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -111,15 +111,20 @@ public class JDBC_CRUD {
             if(preparedStatement!=null)
             {
                 resultSet = preparedStatement.executeQuery();
-                // s_roll is auto_incremented and college has default value
-                System.out.println(" s_roll      s_name       city      college");
-                while(resultSet.next())
-                {
-                    System.out.println("   "+resultSet.getInt(1)+
-                            "      "+resultSet.getString(2)+
-                            "    "+resultSet.getString(3)+
-                            "    "+resultSet.getString(4));
+                if(!resultSet.next())
+                    System.out.println("No data found");
+                else{
+                    // s_roll is auto_incremented and college has default value
+                    System.out.println(" s_roll      s_name       city      college");
+                    do
+                    {
+                        System.out.println("   "+resultSet.getInt(1)+
+                                "      "+resultSet.getString(2)+
+                                "    "+resultSet.getString(3)+
+                                "    "+resultSet.getString(4));
+                    }while(resultSet.next());
                 }
+
             }
 
         } catch (SQLException e) {
@@ -150,7 +155,7 @@ public class JDBC_CRUD {
                 if(rowsEffected>0)
                     System.out.println("Record Updation Successful");
                 else
-                   throw new SQLException(); 
+                    throw new SQLException();
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -183,40 +188,40 @@ public class JDBC_CRUD {
     // Drop(delete all records with table structure) or Truncating(Delete all record only) the Table from Database
     public static void drop() throws SQLException
     {
-    	try {
-			Statement statement = connection.createStatement();
-			if(statement !=null)
-			{
-				System.out.println("Press 1 to Delete the Table\tPress 2 to Delete all the Records from the Table");
-				System.out.print("Enter Your Choice :");
-		    	int choice = scan.nextInt();
-		    	String sql;
-		    	if(choice==1)
-		    	{
-		    		sql = "Drop table student;";
-		    		int rowsEffected = statement.executeUpdate(sql);
-		    		if(rowsEffected == 0 )
-		    			System.out.println("Table Dropped Successfully");
-		    		else
-		    			throw new SQLException();
-		    	}
-		    		
-		    	else if(choice==2)
-		    	{
-		    		sql = "Truncate table student;";
-		    		int rowsEffected = statement.executeUpdate(sql);
-		    		if(rowsEffected == 0 )
-		    			System.out.println("All Records Deleted Successfully");
-		    		else
-		    			throw new SQLException();
-		    	}
-		    		
-		    	else
-		    		System.out.println("Enter Correct Choice");
-				
-			}
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
+        try {
+            Statement statement = connection.createStatement();
+            if(statement !=null)
+            {
+                System.out.println("Press 1 to Delete the Table\tPress 2 to Delete all the Records from the Table");
+                System.out.print("Enter Your Choice :");
+                int choice = scan.nextInt();
+                String sql;
+                if(choice==1)
+                {
+                    sql = "Drop table student;";
+                    int rowsEffected = statement.executeUpdate(sql);
+                    if(rowsEffected == 0 )
+                        System.out.println("Table Dropped Successfully");
+                    else
+                        throw new SQLException();
+                }
+
+                else if(choice==2)
+                {
+                    sql = "Truncate table student;";
+                    int rowsEffected = statement.executeUpdate(sql);
+                    if(rowsEffected == 0 )
+                        System.out.println("All Records Deleted Successfully");
+                    else
+                        throw new SQLException();
+                }
+
+                else
+                    System.out.println("Enter Correct Choice");
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

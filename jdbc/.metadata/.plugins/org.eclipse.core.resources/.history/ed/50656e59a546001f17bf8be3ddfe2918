@@ -1,0 +1,66 @@
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Properties;
+import java.util.Scanner;
+
+public class JDBCUtil 
+{
+	
+	public static Connection getJdbcConnection() throws IOException, SQLException
+	{
+	// Import Packages (here my-sql-connector)
+    // Load Driver
+    // Register the Driver
+    // Establish the connection
+    // Execute the SQL Queries
+		static Connection connection = null;
+	    static Scanner scan = new Scanner(System.in);
+	    static PreparedStatement preparedStatement = null;
+	    static ResultSet resultSet = null;
+	
+    
+    try {
+    	// Load & Register the Driver is optional
+    	//Class.forName("com.mysql.cj.jdbc.Driver");
+//        String url = "jdbc:mysql://localhost:3306/mydb";
+//        // we can use this url also
+//        //String url = "jdbc:mysql:///mydb"; // default host and port no.
+//        String username = "root";
+//        String password = "Goutam@12345";
+        	// we should not disclose the url,username and password here, we should make a separate Application.properties files to mention those.
+    	// After creating the .propeties file outside the src folder
+        	FileInputStream fis = new FileInputStream("App.properties");
+        	Properties p = new Properties();
+        	p.load(fis);
+        	String url = p.getProperty("url");
+        	String username = p.getProperty("username");
+        	String password = p.getProperty("password");
+        
+        	try 
+        	{
+        		// Establish the connection
+        		connection =  DriverManager.getConnection(url,username,password);
+        		if(connection!=null)
+        		{
+        			System.out.println(url);
+        			System.out.println(username);
+        			System.out.println(password);
+        		}
+        	}
+        	catch()
+        	{
+        	
+        	}
+    	}
+    	catch()
+    	{
+    	
+    	}
+	}
+  }
+	

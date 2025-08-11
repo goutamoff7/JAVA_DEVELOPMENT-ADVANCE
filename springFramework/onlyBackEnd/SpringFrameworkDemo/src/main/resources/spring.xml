@@ -1,0 +1,24 @@
+<!--Search for spring 6 bean configuration xml and copied it.-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!--    Two objects will be created of Developer Class-->
+
+<!--    <bean id="developer1" class="org.example.Developer">-->
+<!--    </bean>-->
+
+<!--    <bean id="developer2" class="org.example.Developer">-->
+<!--    </bean>-->
+
+    <bean id="developer" class="org.example.Developer" scope = "prototype">
+    </bean>
+
+
+            <bean id="laptop" class="org.example.Laptop">
+            </bean>
+
+        </beans>
+

@@ -1,9 +1,9 @@
 package myPackage;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Persistence;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.*;
@@ -13,8 +13,14 @@ public class CreateData
 {
     public static void main(String[] args) throws IOException
     {
+        Certificate c1 = new Certificate();
+        c1.setCourseName("Jpa-hibernate");
+        c1.setDuration(2);
+
         Student s1 = new Student();
         s1.setName("Goutam Dam");
+        s1.setCrtf(c1);
+
 
         Address a1 = new Address();
         a1.setStreet("Ramkrishna Pally");

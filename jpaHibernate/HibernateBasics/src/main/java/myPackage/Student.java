@@ -1,5 +1,5 @@
 package myPackage;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 
 @Entity

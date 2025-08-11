@@ -1,8 +1,6 @@
 package myPackage;
 
-import javax.persistence.Embeddable;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import jakarta.persistence.Embeddable;
 
 @Embeddable
 public class Certificate

@@ -1,6 +1,7 @@
 package io.goutam;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,7 +15,7 @@ public class Person
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "person")
-    private List<Orders> orders;
+    private List<Orders> orders = new ArrayList<>();
 
 
     public int getId() {

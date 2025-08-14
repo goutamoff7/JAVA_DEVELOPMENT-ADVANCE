@@ -17,8 +17,36 @@
     </bean>
 
 
-            <bean id="laptop" class="org.example.Laptop">
-            </bean>
+    <bean id="student" class="org.example.Student">
+<!-- Constructor injection (Sequence)- called parameterised constructor to initialize id,laptop property -->
 
-        </beans>
+<!--        <constructor-arg value="24"/> this one should be the first parameter of the constructor -->
+<!--        <constructor-arg ref="lap"/>  this one should be the second parameter of the constructor -->
+
+<!--        Constructor injection - (type)-->
+<!--        <constructor-arg type="org.example.Laptop" ref="lap"/>
+            <constructor-arg type="int" value="24"/>  -->
+
+<!--        Constructor injection - (index) ideal solution -->
+<!--            <constructor-arg index="1" ref="lap"/>-->
+<!--            <constructor-arg index="0" value="24"/>-->
+
+<!--        Constructor injection - (name) here also we need to maintain sequence-->
+<!--      If we don't want to maintain sequence then add annotation @ConstructorProperties({"id","laptop"})
+          on Constructor-->
+        <constructor-arg name="laptop" ref="lap"/>
+        <constructor-arg name="id" value="24"/>
+
+
+
+<!--    Setter injection - called setAge() method of Student Class and assigned 27 to the property age-->
+        <property name="age" value="27"/>
+<!--    wiring (assign) the Laptop object reference (lap) to laptop property of Student Class -->
+<!--        <property name="laptop" ref="lap"/>-->
+    </bean>
+
+    <bean id="lap" class="org.example.Laptop">
+    </bean>
+
+</beans>
 

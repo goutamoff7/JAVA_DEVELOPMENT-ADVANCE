@@ -7,8 +7,4 @@ public class Developer {
     Developer(){
         System.out.println("Developer Object Created");
     }
-
-    public void code(){
-        System.out.println("Coding");
-    }
 }

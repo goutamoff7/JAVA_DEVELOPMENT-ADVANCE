@@ -1,0 +1,56 @@
+<!--Search for spring 6 bean configuration xml and copied it.-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--    <bean id="developer" class="org.example.Developer">-->
+    <!--        <property name="computer" ref="lap"/>-->
+    <!--        <property name="age" value="24"/>-->
+    <!--    </bean>-->
+
+    <!--    using autowire (byName) dependency injection-->
+    <!--    <bean id="developer" class="org.example.Developer" autowire="byName">-->
+    <!--        <property name="age" value="24"/>-->
+    <!--        mentioning autowire byName and property both, will prefer property tag-->
+    <!--        <property name="computer" ref="lap"/>-->
+    <!--    </bean>-->
+
+    <!--    <bean id="lap" class="org.example.Laptop">-->
+    <!--    </bean>-->
+
+    <!--    same id as field name of Develop class-->
+    <!--    <bean id="computer" class="org.example.Desktop">-->
+    <!--    </bean>-->
+
+    <!--    using autowire (byType) dependency injection -->
+    <!--    injection will be done by Type, but if property given, it will prefer property -->
+    <bean id="developer" class="org.example.Developer" autowire="byType">
+        <property name="age" value="24"/>
+<!--        <property name="computer" ref="com2"/>-->
+    </bean>
+
+    <!--   if both bean id - com1 and com2 is there then there will be ambiguity as both implements Computer -->
+    <!--   so comment either one and run  else use primary=true to the specific bean configuration-->
+
+    <!--    different id, not matched with field name of Develop class set as primary-->
+    <bean id="com1" class="org.example.Laptop" primary="true">
+    </bean>
+
+    <!--    different id, not matched with field name of Develop class-->
+    <!-- Let's make the Desktop object with lazy-init="true" means
+    if required then only the object will be created not when the container is created
+    but scope is singleton-->
+    <!--This bean is lazy but if it depends on the Eager bean then the
+    object will be created when the container is created -->
+    <!--    uncomment the <property name="computer" tag and try to run-->
+    <bean id="com2" class="org.example.Desktop" lazy-init="true">
+    </bean>
+
+    <bean class="org.example.Mobile" lazy-init="true">
+    </bean>
+
+
+</beans>
+

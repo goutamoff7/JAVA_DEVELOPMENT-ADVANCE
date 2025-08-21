@@ -1,0 +1,85 @@
+/* Global body background - soft cream */
+body {
+    background-color: #f5f1e3; /* Coffee cream */
+    color: #3e2723; /* Dark roast text */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #6f4e37 !important; /* Coffee brown */
+}
+.navbar-brand {
+    color: #6f4e37 !important; /* Latte cream */
+    font-weight: bold;
+}
+.navbar-nav .nav-link {
+    font-size: 18px;
+    color: #4e342e !important;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+.navbar-nav .nav-link:hover {
+    color: #d2691e !important; /* Caramel highlight */
+    border-bottom: 2px solid #d2691e; /* underline on hover */
+}
+
+/* Container + Card styling */
+.container {
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 50px;
+    background-color: #fff8f0; /* Light latte background */
+    box-shadow: 0 4px 12px rgba(111, 78, 55, 0.2);
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+    background-color: #d7ccc8; /* Cappuccino beige */
+    box-shadow: 0 6px 15px rgba(62, 39, 35, 0.2);
+    transition: transform 0.3s;
+}
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #6f4e37; /* Coffee brown */
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 30px;
+    transition: background-color 0.3s ease;
+}
+.btn-primary:hover {
+    background-color: #8d6e63; /* Mocha */
+}
+
+/* Oval Box Styling */
+.oval-box-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+}
+.oval-box {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    background-color: #8d6e63; /* Mocha brown */
+    border-radius: 50%;
+    color: #fff8f0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+.oval-box:hover {
+    background-color: #5d4037; /* Dark roast */
+    transform: scale(1.05);
+}

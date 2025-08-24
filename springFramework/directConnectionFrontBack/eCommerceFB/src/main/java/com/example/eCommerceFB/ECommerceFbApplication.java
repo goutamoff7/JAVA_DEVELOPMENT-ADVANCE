@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ECommerceFbApplication {
+public class ECommerceFBApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ECommerceFbApplication.class, args);
+		SpringApplication.run(ECommerceFBApplication.class, args);
 	}
 
 }

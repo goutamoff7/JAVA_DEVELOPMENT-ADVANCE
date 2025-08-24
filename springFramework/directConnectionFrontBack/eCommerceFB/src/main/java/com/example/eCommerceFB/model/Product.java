@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
 
 @Data
@@ -30,7 +29,6 @@ public class Product
     private String imageName;
     private String imageType;
     @Lob
-    @Column(columnDefinition = "longblob")
     private byte[] imageData;
 
 

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MyController
 {
-    @GetMapping("/")
+    @GetMapping("/hello")
     public String welcomePage()
     {
         return "Welcome here to learn SpringOauth2.0";

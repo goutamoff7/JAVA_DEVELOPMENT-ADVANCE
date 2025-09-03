@@ -15,7 +15,7 @@ public class JDBCProstgresqlUtil {
 
         String url = "jdbc:postgresql://localhost:5432/college";
         String username = "postgres";
-        String password = "Goutam@12345";
+        String password = "12345";
         try {
             // Establish the connection
             connection = DriverManager.getConnection(url, username, password);

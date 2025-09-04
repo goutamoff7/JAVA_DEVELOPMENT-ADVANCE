@@ -24,40 +24,45 @@ public class JobController {
         return jobService.getAllJobs();
     }
 
-    @GetMapping("jobPost/{postId}")
+    @GetMapping("jobPosts/{postId}")
     public JobPost getJob(@PathVariable Integer postId) {
         return jobService.getJob(postId);
     }
 
-    @PostMapping("jobPost")
+    @PostMapping("jobPosts")
     public void addJob(@RequestBody JobPost jobPost) {
         jobService.addJob(jobPost);
     }
 
-    @PostMapping(value = "jobPost", consumes = {"application/xml"})
+    @PostMapping(value = "jobPosts", consumes = {"application/xml"})
     public void addJobXML(@RequestBody JobPost jobPost) {
         jobService.addJob(jobPost);
     }
 
-    @PutMapping("jobPost")
-    public void updateJob(@RequestBody JobPost jobPost) {
-        jobService.updateJob(jobPost);
+    @PutMapping("jobPosts/{postId}")
+    public void updateJob(@PathVariable int postId, @RequestBody JobPost jobPost) {
+        jobService.updateJob(postId,jobPost);
     }
 
-    @DeleteMapping("jobPost/{postId}")
+    @DeleteMapping("jobPosts/{postId}")
     public void deleteJob(@PathVariable Integer postId) {
         jobService.deleteJob(postId);
     }
 
-    @GetMapping("jobPost/load")
+    @GetMapping("jobPosts/load")
     public String loadData() {
         jobService.loadData();
         return "Dummy Data Loaded";
     }
 
-    @GetMapping("jobPost/search/{keyword}")
-    public List<JobPost> search(@PathVariable String keyword) {
+    @GetMapping("jobPosts/search")
+    public List<JobPost> search(@RequestParam String keyword) {
         return jobService.searchByKeyword(keyword);
+    }
+
+    @GetMapping("jobPosts/searchByRequiredExperience")
+    public List<JobPost> search(@RequestParam int requiredExperience) {
+        return jobService.searchByRequiredExperience(requiredExperience);
     }
 }
 

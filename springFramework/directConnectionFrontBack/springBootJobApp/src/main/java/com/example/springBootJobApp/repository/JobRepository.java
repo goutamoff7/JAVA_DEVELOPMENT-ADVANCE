@@ -11,5 +11,7 @@ public interface JobRepository extends JpaRepository<JobPost,Integer> {
 
     List<JobPost> findByPostProfileContainingIgnoreCaseOrPostDescriptionContainingIgnoreCase(
             String postProfile, String postDescription);
+
+    List<JobPost> findByRequiredExperience(int requiredExperience);
 }
 

@@ -26,8 +26,9 @@ public class JobService {
         return jobRepository.findById(postId).orElse(null);
     }
 
-    public void updateJob(JobPost jobPost) {
-        jobRepository.save(jobPost);
+    public void updateJob(int postId,JobPost jobPost) {
+        if(jobRepository.findById(postId).isPresent())
+            jobRepository.save(jobPost);
     }
 
     public void deleteJob(Integer postId) {
@@ -80,4 +81,7 @@ public class JobService {
         jobRepository.saveAll(jobs);
     }
 
+    public List<JobPost> searchByRequiredExperience(int requiredExperience) {
+        return jobRepository.findByRequiredExperience(requiredExperience);
+    }
 }

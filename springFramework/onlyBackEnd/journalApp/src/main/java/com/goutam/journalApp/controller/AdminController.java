@@ -1,6 +1,6 @@
 package com.goutam.journalApp.controller;
 
-import com.goutam.journalApp.Pagination.PagingResponse;
+import com.goutam.journalApp.Pagination.PageResponse;
 import com.goutam.journalApp.model.User;
 import com.goutam.journalApp.model.JournalEntry;
 import com.goutam.journalApp.DTO.UserDTO;
@@ -33,10 +33,9 @@ public class AdminController {
             @RequestParam(required = false,defaultValue = "0") int pageNumber,
             @RequestParam(required = false,defaultValue = "12") int pageSize,
             @RequestParam(required = false,defaultValue = "id") String sortBy,
-            @RequestParam(required = false,defaultValue = "ASC") String sortingOrder
-    ) {
+            @RequestParam(required = false,defaultValue = "ASC") String sortingOrder) {
         try {
-            PagingResponse<User> allUser = adminService.getAll(
+            PageResponse<User> allUser = adminService.getAll(
                     User.class,pageNumber,pageSize,sortBy,sortingOrder);
             if (allUser != null)
                 return new ResponseEntity<>(allUser, HttpStatus.OK);
@@ -74,10 +73,9 @@ public class AdminController {
             @RequestParam(required = false,defaultValue = "0") int pageNumber,
             @RequestParam(required = false,defaultValue = "12") int pageSize,
             @RequestParam(required = false,defaultValue = "id") String sortBy,
-            @RequestParam(required = false,defaultValue = "ASC") String sortingOrder
-    ){
+            @RequestParam(required = false,defaultValue = "ASC") String sortingOrder){
         try {
-            PagingResponse<JournalEntry> allJournals = adminService.getAll(
+            PageResponse<JournalEntry> allJournals = adminService.getAll(
                     JournalEntry.class,pageNumber,pageSize,sortBy,sortingOrder);
             if (allJournals != null)
                 return new ResponseEntity<>(allJournals, HttpStatus.OK);

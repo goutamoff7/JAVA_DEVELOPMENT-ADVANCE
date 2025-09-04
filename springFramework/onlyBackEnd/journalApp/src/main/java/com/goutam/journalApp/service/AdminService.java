@@ -1,6 +1,6 @@
 package com.goutam.journalApp.service;
 
-import com.goutam.journalApp.Pagination.PagingResponse;
+import com.goutam.journalApp.Pagination.PageResponse;
 import com.goutam.journalApp.model.JournalEntry;
 import com.goutam.journalApp.model.Roles;
 import com.goutam.journalApp.model.User;
@@ -38,7 +38,7 @@ public class AdminService {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> PagingResponse<T> getAll(
+    public <T> PageResponse<T> getAll(
             Class<T> entityClass,
             int pageNumber,
             int pageSize,
@@ -49,10 +49,10 @@ public class AdminService {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         if (entityClass.equals(User.class)) {
             Page<User> pageUsers = userRepository.findAll(pageable);
-            return (PagingResponse<T>) PagingResponse.getPagingResponse(pageUsers);
+                return (PageResponse<T>) PageResponse.getPageResponse(pageUsers);
         } else if (entityClass.equals(JournalEntry.class)) {
             Page<JournalEntry> pageJournalEntries = journalEntryRepository.findAll(pageable);
-            return (PagingResponse<T>) PagingResponse.getPagingResponse(pageJournalEntries);
+            return (PageResponse<T>) PageResponse.getPageResponse(pageJournalEntries);
         } else {
             throw new IllegalArgumentException("Unsupported entity type: " + entityClass.getName());
 

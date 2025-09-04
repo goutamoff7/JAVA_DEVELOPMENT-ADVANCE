@@ -1,7 +1,7 @@
 package com.goutam.journalApp.controller;
 
 import com.goutam.journalApp.DTO.JournalDTO;
-import com.goutam.journalApp.Pagination.PagingResponse;
+import com.goutam.journalApp.Pagination.PageResponse;
 import com.goutam.journalApp.model.JournalEntry;
 import com.goutam.journalApp.model.User;
 import com.goutam.journalApp.service.JournalEntryService;
@@ -61,7 +61,7 @@ public class JournalEntryController {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String username = authentication.getName();
-            PagingResponse<JournalEntry> allJournalEntryOfUser =
+            PageResponse<JournalEntry> allJournalEntryOfUser =
                     journalEntryService.getJournalEntriesOfUser(
                             username,pageNumber,pageSize,sortBy,sortingOrder);
             if (allJournalEntryOfUser != null)

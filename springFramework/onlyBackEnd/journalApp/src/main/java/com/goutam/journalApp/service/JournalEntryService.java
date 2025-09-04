@@ -1,6 +1,6 @@
 package com.goutam.journalApp.service;
 
-import com.goutam.journalApp.Pagination.PagingResponse;
+import com.goutam.journalApp.Pagination.PageResponse;
 import com.goutam.journalApp.model.JournalEntry;
 import com.goutam.journalApp.model.User;
 import com.goutam.journalApp.repository.JournalEntryRepository;
@@ -40,7 +40,7 @@ public class JournalEntryService {
         return journalEntryRepository.findById(id).orElse(null);
     }
 
-    public PagingResponse<JournalEntry> getJournalEntriesOfUser(
+    public PageResponse<JournalEntry> getJournalEntriesOfUser(
             String username,
             int pageNumber,
             int pageSize,
@@ -52,7 +52,7 @@ public class JournalEntryService {
                 Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         Page<JournalEntry> pageJournalEntries = journalEntryRepository.findByUser(user, pageable);
-        return PagingResponse.getPagingResponse(pageJournalEntries);
+        return PageResponse.getPageResponse(pageJournalEntries);
     }
 
     //verify whether the given id belongs to the requested user or not

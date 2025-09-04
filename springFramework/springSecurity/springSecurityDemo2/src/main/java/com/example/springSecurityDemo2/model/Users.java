@@ -1,0 +1,18 @@
+package com.example.springSecurityDemo2.model;
+
+import com.example.springSecurityDemo2.constants.Role;
+import jakarta.persistence.*;
+import lombok.Data;
+
+@Data
+@Entity
+public class Users {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String username;
+    private String password;
+    @Enumerated(EnumType.STRING)
+    private Role role;
+}

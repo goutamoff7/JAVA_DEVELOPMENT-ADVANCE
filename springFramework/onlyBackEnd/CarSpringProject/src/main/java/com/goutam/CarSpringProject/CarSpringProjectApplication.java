@@ -9,7 +9,6 @@ public class CarSpringProjectApplication {
 
 	public static void main(String[] args) 
 	{
-		SpringApplication.run(CarSpringProjectApplication.class, args);
 		ConfigurableApplicationContext context = SpringApplication.run(CarSpringProjectApplication.class, args);
 		Bike c1 = context.getBean(Bike.class);
 		System.out.println("Bike Name : "+ c1.getName()+

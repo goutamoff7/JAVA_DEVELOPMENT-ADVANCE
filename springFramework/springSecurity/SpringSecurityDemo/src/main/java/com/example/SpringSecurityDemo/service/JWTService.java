@@ -20,17 +20,18 @@ import java.util.function.Function;
 public class JwtService
 {
     private String secretKey = "";
-
     public JwtService()
     {
         try {
             KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
+            keyGen.init(256);
             SecretKey sk = keyGen.generateKey();
-            secretKey = Base64.getEncoder().encodeToString(sk.getEncoded());
+            secretKey = Base64.getUrlEncoder().withoutPadding().encodeToString(sk.getEncoded());
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
     }
+
     public String generateToken(String username)
     {
         return Jwts
@@ -45,7 +46,7 @@ public class JwtService
 
     private SecretKey getKey()
     {
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        byte[] keyBytes = Base64.getUrlDecoder().decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 

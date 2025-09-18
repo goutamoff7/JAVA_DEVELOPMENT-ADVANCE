@@ -1,0 +1,43 @@
+
+services:
+
+  postgresql:
+    image: postgres:latest
+    container_name: postgresql_db
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRESQL_DATABASE}
+      POSTGRES_USER: ${POSTGRESQL_USER}
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
+    ports:
+      - ${HOST_POSTGRESQL_PORT}:${POSTGRESQL_PORT}
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data
+    networks:
+      - e_commerce_network
+
+  springboot:
+    build: .
+    container_name: e-commerce-app
+    restart: always
+    environment:
+      SERVER_PORT: ${SERVER_PORT}
+      POSTGRESQL_HOST: ${POSTGRESQL_HOST}
+      POSTGRESQL_PORT: ${POSTGRESQL_PORT}
+      POSTGRESQL_DATABASE: ${POSTGRESQL_DATABASE}
+      POSTGRESQL_USER: ${POSTGRESQL_USER}
+      POSTGRESQL_PASSWORD: ${POSTGRESQL_PASSWORD}
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    depends_on:
+      - postgresql
+    networks:
+      - e_commerce_network
+
+volumes:
+  postgresql_data:
+
+networks:
+  e_commerce_network:
+    driver: bridge
+

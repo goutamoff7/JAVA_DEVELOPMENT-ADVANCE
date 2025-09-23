@@ -6,26 +6,17 @@ import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
 public class ChatController {
-
 
     ChatClient chatClient;
 
 //    only one AI credentials should be in application.properties
 //    public ChatController(ChatClient.Builder chatClientBuilder) {
 //        this.chatClient = chatClientBuilder.build();
-//    }
-
-//  requires both AI credentials in application.properties and configuration for AI chat model
-//    public ChatController(ChatClient chatClient) {
-//        this.chatClient = chatClient;
 //    }
 
 //    with Advisors:
@@ -49,7 +40,7 @@ public class ChatController {
 
     ChatMemory chatMemory = MessageWindowChatMemory.builder().build();
 
-public ChatController(ChatClient.Builder chatClientBuilder) {
+    public ChatController(ChatClient.Builder chatClientBuilder) {
         this.chatClient = chatClientBuilder
                 .defaultAdvisors(MessageChatMemoryAdvisor
                         .builder(chatMemory)
@@ -61,9 +52,9 @@ public ChatController(ChatClient.Builder chatClientBuilder) {
     public ResponseEntity<String> getAnswer(@PathVariable String message) {
         String response =
                 chatClient
-                .prompt(message)
-                .call()
-                .content();
+                        .prompt(message)
+                        .call()
+                        .content();
         return ResponseEntity.ok(response);
     }
 
@@ -95,6 +86,7 @@ public ChatController(ChatClient.Builder chatClientBuilder) {
 
         return ResponseEntity.ok(response);
     }
+
 }
 
 

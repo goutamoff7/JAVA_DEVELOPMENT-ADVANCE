@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
+@RequestMapping("/api")
 public class EmbeddingController {
 
     EmbeddingModel embeddingModel;
@@ -13,7 +14,7 @@ public class EmbeddingController {
         this.embeddingModel = embeddingModel;
     }
 
-    @PostMapping("/api/embedding")
+    @GetMapping("/embedding")
     public float[] embedding(@RequestParam String text) {
         return embeddingModel.embed(text);
     }
@@ -41,7 +42,7 @@ public class EmbeddingController {
                 ||B|| = sqrt [∑i=1 to n (Bi*Bi)] - (magnitude of vector B)
     */
 
-    @PostMapping("/api/similarity")
+    @GetMapping("/similarity")
     public double getSimilarity(@RequestParam String textA, @RequestParam String textB) {
 
         float[] vectorA = embeddingModel.embed(textA);
